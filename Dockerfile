@@ -12,12 +12,14 @@ RUN apt-get update
 RUN sh -c 'echo "yaml http://packages.dataspeedinc.com/ros/ros-public-'$ROS_DISTRO'.yaml '$ROS_DISTRO'" > /etc/ros/rosdep/sources.list.d/30-dataspeed-public-'$ROS_DISTRO'.list'
 RUN rosdep update
 RUN apt-get install -y ros-$ROS_DISTRO-dbw-mkz
+RUN apt-get install -y vim
 RUN apt-get upgrade -y
 # end installing Dataspeed DBW
 
 # install python packages
 RUN apt-get install -y python-pip
 COPY requirements.txt ./requirements.txt
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # install required ros dependencies
