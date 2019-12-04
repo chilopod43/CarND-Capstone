@@ -1,3 +1,4 @@
+import tensorflow as tf
 from styx_msgs.msg import TrafficLight
 
 class TLClassifier(object):
@@ -6,7 +7,7 @@ class TLClassifier(object):
         self.graph = tf.Graph()
         with self.graph.as_default():
             graph_def = tf.GraphDef()
-            with tf.gfile.GFile("./ssd_mobilenet.pb", 'rb') as f:
+            with tf.gfile.GFile("./light_classification/ssd_mobilenet.pb", 'rb') as f:
                 frozen_graph = f.read()
                 graph_def.ParseFromString(frozen_graph)
                 tf.import_graph_def(graph_def, name='')
