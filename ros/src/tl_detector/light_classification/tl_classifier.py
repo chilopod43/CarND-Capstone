@@ -1,3 +1,4 @@
+import numpy as np
 import tensorflow as tf
 from styx_msgs.msg import TrafficLight
 
@@ -34,19 +35,18 @@ class TLClassifier(object):
         with self.graph.as_default():
             unsqueezed_image = np.expand_dims(image, axis=0)
 
-            (scores, classes) = sess.run([self.scores, self.classes],
-              feed_dict={image_tensor: unsqueezed_image})
+            (scores, classes) = self.sess.run([self.scores, self.classes],
+              feed_dict={self.image: unsqueezed_image})
         
         scores = np.squeeze(scores)
         classes = np.squeeze(classes).astype(np.int32)
         
         state = TrafficLight.UNKNOWN
-        if scores[0] > self.threshold:
+        if scores[0] > 0.5:
             if classes[0] == 1:
                 state = TrafficLight.GREEN
             elif classes[0] == 2:
                 state = TrafficLight.RED
             elif classes[0] == 3:
                 state = TrafficLight.YELLOW
-
         return state
